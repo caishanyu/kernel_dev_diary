@@ -35,6 +35,8 @@ static const struct of_device_id mydev_of_ids[] = {
     {}      // 必须{}表示结尾
 };
 
+MODULE_DEVICE_TABLE(of, mydev_of_ids);  // 生成设备树匹配类型（of）的匹配表
+
 static struct platform_driver mydev_platform_driver = {
     .probe = mydev_probe,
     .remove = mydev_remove,
@@ -91,7 +93,6 @@ void mydev_remove(struct platform_device *pdev)
 
 module_platform_driver(mydev_platform_driver);
 
-MODULE_DEVICE_TABLE(of, mydev_of_ids);
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Cai <sybstudy@yeah.net>");
 MODULE_DESCRIPTION("This is an easy platform device driver process");
