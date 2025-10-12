@@ -66,7 +66,7 @@ void nl_recv_msg(struct sk_buff *skb)
     // 设置消息
     nlh = nlmsg_put(skb_out, 0, 0, NLMSG_DONE, msg_size, 0);
     NETLINK_CB(skb_out).dst_group = 0;  // 消息多播组设置为0，表示单播回复
-    strncpy(nlmsg_data(nlh), reply_msg, msg_size);
+    strncpy(NLMSG_DATA(nlh), reply_msg, msg_size);
 
     // 发送消息给用户空间
     res = nlmsg_unicast(nl_sock, skb_out, pid);
@@ -74,6 +74,8 @@ void nl_recv_msg(struct sk_buff *skb)
     {
         pr_err("Error while sending msg to user\n");
     }
+
+    pr_info("Send msg to user (PID: %d) done\n", pid);
 }
 
 static int __init my_module_init(void)

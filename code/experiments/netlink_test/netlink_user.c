@@ -66,7 +66,7 @@ int main()
     dst_addr.nl_pid = 0;        // 内核pid永远是0
     dst_addr.nl_groups = 0;     // 不是多播
 
-    // 创建并设置netlink消息头
+    // 创建并设置netlink消息头，这里申请了hdr+payload的空间，将hdr区域由nlh指针指向
     nlh = (struct nlmsghdr*)malloc(NLMSG_SPACE(MAX_PAYLOAD));
     if(!nlh)
     {
@@ -77,7 +77,8 @@ int main()
     memset(nlh, 0, NLMSG_SPACE(MAX_PAYLOAD));
     nlh->nlmsg_pid = getpid();      // 设置发送方pid
     nlh->nlmsg_flags = 0;
-    strcpy(NLMSG_DATA(nlh), send_msg);
+    nlh->nlmsg_len = NLMSG_SPACE(MAX_PAYLOAD);      // 设置消息长度
+    strcpy(NLMSG_DATA(nlh), send_msg);              // 设置消息内容
 
     // 设置IO向量和消息结构
     iov.iov_base = (void*)nlh;

@@ -1,0 +1,6 @@
+/dts-v1/;
+/plugin/;  // 标明这是一个覆盖插件
+
+/ {
+    compatible = "syb,mydevkeys";
+};
